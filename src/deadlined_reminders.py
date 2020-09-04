@@ -14,6 +14,10 @@ class DeadlinedMetaReminder(Iterable, metaclass=ABCMeta):
 
 class DeadlinedReminder(Iterable, ABC):
     @abstractmethod
+    def __init__(self, text: str, date: str):
+        pass
+
+    @abstractmethod
     def is_due(self) -> bool:
         raise NotImplementedError
 
@@ -21,6 +25,7 @@ class DeadlinedReminder(Iterable, ABC):
 class DateReminder(DeadlinedReminder):
 
     def __init__(self, text: str, date: str):
+        super().__init__(text, date)
         self.date = parse(date, dayfirst=True)
         self.text = text
 
