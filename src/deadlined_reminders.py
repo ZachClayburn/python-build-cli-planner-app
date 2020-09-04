@@ -13,6 +13,20 @@ class DeadlinedMetaReminder(Iterable, metaclass=ABCMeta):
 
 
 class DeadlinedReminder(Iterable, ABC):
+
+    @classmethod
+    def __subclasshook__(cls, subclass):
+        if cls is not DeadlinedReminder:
+            return NotImplemented
+
+        def attr_in_hierarchy(attr):
+            return any(attr in SuperClass.__dict__ for SuperClass in subclass.__mro__)
+
+        if not all(attr_in_hierarchy(attr) for attr in ('__iter__', 'is_due')):
+            return NotImplemented
+
+        return True
+
     @abstractmethod
     def __init__(self, text: str, date: str):
         pass
