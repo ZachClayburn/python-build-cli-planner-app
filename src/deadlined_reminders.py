@@ -3,17 +3,18 @@ from collections.abc import Iterable
 from typing import Iterator
 
 from dateutil.parser import parse
+from datetime import datetime
 
 
 class DeadlinedMetaReminder(Iterable, metaclass=ABCMeta):
     @abstractmethod
-    def is_due(self):
+    def is_due(self) -> bool:
         raise NotImplementedError
 
 
 class DeadlinedReminder(Iterable, ABC):
     @abstractmethod
-    def is_due(self):
+    def is_due(self) -> bool:
         raise NotImplementedError
 
 
@@ -23,8 +24,8 @@ class DateReminder(DeadlinedReminder):
         self.date = parse(date, dayfirst=True)
         self.text = text
 
-    def is_due(self):
-        pass
+    def is_due(self) -> bool:
+        return self.date <= datetime.now()
 
     def __iter__(self) -> Iterator:
         pass
