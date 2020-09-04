@@ -1,9 +1,9 @@
 from abc import ABC, ABCMeta, abstractmethod
 from collections.abc import Iterable
+from datetime import datetime
 from typing import Iterator
 
 from dateutil.parser import parse
-from datetime import datetime
 
 
 class DeadlinedMetaReminder(Iterable, metaclass=ABCMeta):
@@ -27,5 +27,5 @@ class DateReminder(DeadlinedReminder):
     def is_due(self) -> bool:
         return self.date <= datetime.now()
 
-    def __iter__(self) -> Iterator:
-        pass
+    def __iter__(self) -> Iterator[str]:
+        return iter([self.text, self.date.isoformat()])
